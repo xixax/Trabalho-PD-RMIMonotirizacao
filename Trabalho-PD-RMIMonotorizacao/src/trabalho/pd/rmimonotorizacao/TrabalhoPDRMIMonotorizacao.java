@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import trabalho.de.pd.servidor.RMIServidorInterface;
+import trabalho.de.pd.servidor.TrabalhoPDRMIMonotorizacaoInterface;
 
 /**
  *
@@ -36,18 +37,18 @@ public class TrabalhoPDRMIMonotorizacao extends UnicastRemoteObject implements T
             String objectUrl = "rmi://127.0.0.1/GetRemoteFile"; //rmiregistry on localhost
             
             if(args.length > 0)
-                objectUrl = "rmi://"+args[0]+"/GetRemoteFile"; 
+                objectUrl = "rmi://"+args[0]+"/RMITrabalho"; 
                             
-            RMIServidorInterface getRemoteFileService = (RMIServidorInterface)Naming.lookup(objectUrl);
+            RMIServidorInterface getRemoteService = (RMIServidorInterface)Naming.lookup(objectUrl);
             
             //adiciona observador no servico remoto
-            getRemoteFileService.addObserver(observer);
+            getRemoteService.addObserver(observer);
             
             System.out.println("<Enter> para terminar...");
             System.out.println();
             System.in.read();
             
-            getRemoteFileService.removeObserver(observer);
+            getRemoteService.removeObserver(observer);
             UnicastRemoteObject.unexportObject(observer, true);
             
         }catch(RemoteException e){
